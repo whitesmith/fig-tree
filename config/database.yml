@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+default_local: &default_local
+  host: db
+  username: postgres
+
+development:
+  <<: *default
+  <<: *default_local
+  database: rails-pg-fig-devenv_development
+
+test:
+  <<: *default
+  <<: *default_local
+  database: rails-pg-fig-devenv_test
