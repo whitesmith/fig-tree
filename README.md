@@ -30,6 +30,7 @@ using a volume; it is mounted on the host's `~/.docker-volumes/app-name/db/`
 folder.
 
 To prepare this setup:
+
 1. Edit `fig.yml` and change `app-name` to match your application's name; it
 should be unique so there are no collisions with future projects that use this
 setup.
