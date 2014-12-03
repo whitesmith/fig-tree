@@ -1,7 +1,7 @@
 db:
   image: postgres:9.3
-  volumes:
-    - ~/.docker-volumes/app-name/db/:/var/lib/postgresql/data/
+  volumes_from:
+    - APP_NAME-db-data
   ports:
     - 5432
 web:
@@ -9,7 +9,9 @@ web:
   command: bundle exec unicorn -p 3000 -c ./config/unicorn.rb
   volumes:
     - .:/usr/src/app
+  volumes_from:
+    - gems-RUBY_VERSION
   ports:
-    - 3000:3000
+    - "3000:3000"
   links:
     - db
