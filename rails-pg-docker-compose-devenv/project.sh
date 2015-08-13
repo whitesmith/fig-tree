@@ -169,6 +169,10 @@ untagged_clean(){
   remove_image_by_name '^<none>' 2> /dev/null
 }
 
+logs(){
+  docker-compose logs
+}
+
 check_docker
 case "$1" in
   "bootstrap")
@@ -206,6 +210,10 @@ case "$1" in
   "untagged-clean")
     untagged_clean
   ;;
+  
+  "logs")
+    logs
+  ;;
 
   *)
     print_normal "Usage: $0 COMMAND"
@@ -219,6 +227,7 @@ case "$1" in
     print_normal "  project-clean"
     print_normal "  gems-clean"
     print_normal "  untagged-clean"
+    print_normal "  logs"
   ;;
 esac
 

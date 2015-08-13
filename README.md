@@ -1,13 +1,13 @@
 Fig Tree
 --------
 
-Stop killing kittens  setting up your machine: use [Docker][] through [Fig][].
+Stop killing kittens  setting up your machine: use [Docker][] with [Docker Compose][].
 
-This is a collection of Fig development environments maintained by
+This is a collection of Docker Compose development environments maintained by
 [Whitesmith][].
 
 Any suggestions, bugs and feedback are greatly appreciated.
 
 [Docker]: https://www.docker.com/
-[Fig]: http://www.fig.sh/
+[Docker Compose]: https://docs.docker.com/compose/
 [Whitesmith]: http://www.whitesmith.co/
