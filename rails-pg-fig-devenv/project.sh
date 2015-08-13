@@ -2,9 +2,9 @@
 
 # Fancy prints
 print_normal (){ printf "%b\n" "$1" >&2; }
-print_error  (){ printf "$(tput setaf 1)[fig-tree] %b$(tput sgr0)\n" "$1" >&2; }
-print_info   (){ printf "$(tput setaf 3)[fig-tree] %b$(tput sgr0)\n" "$1" >&2; }
-print_success(){ printf "$(tput setaf 2)[fig-tree] %b$(tput sgr0)\n" "$1" >&2; }
+print_error  (){ printf "$(tput setaf 1)[docker-compose-tree] %b$(tput sgr0)\n" "$1" >&2; }
+print_info   (){ printf "$(tput setaf 3)[docker-compose-tree] %b$(tput sgr0)\n" "$1" >&2; }
+print_success(){ printf "$(tput setaf 2)[docker-compose-tree] %b$(tput sgr0)\n" "$1" >&2; }
 
 # Abort in the case of an error
 handle_error(){
@@ -24,7 +24,7 @@ custom_bootstrap(){
   # This is the last bootstrap step; it is run after the first `bundle install`.
   # Since this application has a db, you'll probably want to `rake db:setup`.
   print_info "Setting up the database (rake db:setup)"
-  fig run web bundle exec rake db:setup
+  docker-compose run web bundle exec rake db:setup
   handle_error $? "setting up the database"
 }
 ## /CUSTOMIZE
@@ -32,7 +32,7 @@ custom_bootstrap(){
 DOCKER_MINIMAL_IMAGE=tianon/true
 GEMS_CONTAINER_NAME=gems-$RUBY_VERSION
 DB_DATA_CONTAINER_NAME=$APP_NAME-db-data
-FIG_PREFIX=$(echo ${PWD##*/} | tr -d '-')
+DOCKER_COMPOSE_PREFIX=$(echo ${PWD##*/} | tr -d '-')
 
 # `docker info` call for testing if the Docker host is reachable.
 # Usage: check_docker
@@ -97,25 +97,25 @@ bootstrap(){
 
   # Build the web container
   print_info "Building the web container."
-  fig build web
+  docker-compose build web
   handle_error $? "building the web container"
 
   # Check if the gems container was just created; if so, install bundler.
   if [ -z "$GEMS_CONTAINER" ]; then
     print_info "Gems container is new, installing bundler."
-    fig run web gem install bundler
+    docker-compose run web gem install bundler
     handle_error $? "installing bundler"
   else
     print_info "Gems container already existed before this script: assuming bundler is already installed."
     print_info "In the case of failure, run"
-    print_info "  fig run web gem install bundler"
+    print_info "  docker-compose run web gem install bundler"
     print_info "and re-run this script."
   fi
 
   # Install app's dependencies
   print_normal
   print_info "Installing dependencies (bundle install)"
-  fig run web bundle install --jobs 4 --retry 3
+  docker-compose run web bundle install --jobs 4 --retry 3
   handle_error $? "installing the app's dependencies"
 
   custom_bootstrap
@@ -134,26 +134,26 @@ start(){
   print_info "Open $URL on your browser."
   print_normal
 
-  fig up
+  docker-compose up
 }
 
 bundle_exec(){
-  # Teaching fig commands, one at a time.
+  # Teaching docker-compose commands, one at a time.
   local command=$(echo ${@})
   print_info "Running"
-  print_info "  fig run web bundle exec $command"
-  fig run web bundle exec $command
+  print_info "  docker-compose run web bundle exec $command"
+  docker-compose run web bundle exec $command
 }
 
 stop(){
-  fig stop
-  fig rm
+  docker-compose stop
+  docker-compose rm
 }
 
 clean(){
-  stop_container_by_name $FIG_PREFIX
-  remove_container_by_name $FIG_PREFIX
-  remove_image_by_name $FIG_PREFIX
+  stop_container_by_name $DOCKER_COMPOSE_PREFIX
+  remove_container_by_name $DOCKER_COMPOSE_PREFIX
+  remove_image_by_name $DOCKER_COMPOSE_PREFIX
 }
 
 project_clean(){
