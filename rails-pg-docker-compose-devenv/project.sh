@@ -2,9 +2,9 @@
 
 # Fancy prints
 print_normal (){ printf "%b\n" "$1" >&2; }
-print_error  (){ printf "$(tput setaf 1)[docker-compose-tree] %b$(tput sgr0)\n" "$1" >&2; }
-print_info   (){ printf "$(tput setaf 3)[docker-compose-tree] %b$(tput sgr0)\n" "$1" >&2; }
-print_success(){ printf "$(tput setaf 2)[docker-compose-tree] %b$(tput sgr0)\n" "$1" >&2; }
+print_error  (){ printf "$(tput setaf 1)[fig-tree] %b$(tput sgr0)\n" "$1" >&2; }
+print_info   (){ printf "$(tput setaf 3)[fig-tree] %b$(tput sgr0)\n" "$1" >&2; }
+print_success(){ printf "$(tput setaf 2)[fig-tree] %b$(tput sgr0)\n" "$1" >&2; }
 
 # Abort in the case of an error
 handle_error(){
